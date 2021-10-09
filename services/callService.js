@@ -2,7 +2,7 @@ var FormData = require("form-data"); //not used
 var request = require("request");
 
 module.exports = class CallService {
-  static async callAstrologer(data) {
+  static async callDoctor(data) {
     const body = {
       From: data.phone.from,
       To: data.phone.to,

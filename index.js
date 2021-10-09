@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-const astrologers = require("./routes/astrologerRoute.js");
+const doctors = require("./routes/doctorRoute.js");
 const users = require("./routes/userRoute.js");
 const call = require("./routes/callRoute.js");
 const wallet = require("./routes/walletRoute");
@@ -15,8 +15,8 @@ const swaggerOptions = {
   swaggerDefinition: {
     openapi: "3.0.0",
     info: {
-      title: "Top Astrologer API",
-      description: "Top Astrologer Backend API DOC",
+      title: "Top Doctor API",
+      description: "Top Doctor Backend API DOC",
       servers: ["http://localhost:8000"],
     },
   },
@@ -38,7 +38,7 @@ mongoose
 //register the enpoints
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/astrologers", astrologers);
+app.use("/doctors", doctors);
 app.use("/users", users);
 app.use("/calling", call);
 app.use("/wallet", wallet);

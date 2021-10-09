@@ -1,4 +1,4 @@
-const Astrologer = require("../models/astrologer");
+const Doctor = require("../models/doctor");
 const admin = require("firebase-admin");
 const PRIVATEKEY =
   process.env.PRIVATEKEY1 +
@@ -22,39 +22,39 @@ const serviceAccount = {
   client_x509_cert_url: process.env.CLIENTX509CERTURL,
 };
 
-module.exports = class AstrologerService {
-  static async getAllAstrologers() {
-    const allAstrologers = await Astrologer.find();
-    return allAstrologers;
+module.exports = class DoctorService {
+  static async getAllDoctors() {
+    const allDoctors = await Doctor.find();
+    return allDoctors;
   }
 
-  static async createAstrologer(data) {
-    const newAstrologer = {
+  static async createDoctor(data) {
+    const newDoctor = {
       title: data.title,
       body: data.body,
       article_image: data.article_image,
     };
-    const response = await new Astrologer(newAstrologer).save();
+    const response = await new Doctor(newDoctor).save();
     return response;
   }
 
-  static async getAstrologerbyId(articleId) {
-    const singleAstrologerResponse = await Astrologer.findById({
+  static async getDoctorbyId(articleId) {
+    const singleDoctorResponse = await Doctor.findById({
       _id: articleId,
     });
-    return singleAstrologerResponse;
+    return singleDoctorResponse;
   }
 
-  static async updateAstrologer(title, body, articleImage) {
-    const updateResponse = await Astrologer.updateOne(
+  static async updateDoctor(title, body, articleImage) {
+    const updateResponse = await Doctor.updateOne(
       { title, body, articleImage },
       { $set: { date: new Date.now() } }
     );
     return updateResponse;
   }
 
-  static async deleteAstrologer(articleId) {
-    const deletedResponse = await Astrologer.findOneAndDelete(articleId);
+  static async deleteDoctor(articleId) {
+    const deletedResponse = await Doctor.findOneAndDelete(articleId);
     return deletedResponse;
   }
 };

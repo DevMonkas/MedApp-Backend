@@ -1,26 +1,22 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const astrologerSchema = Schema({
+const doctorSchema = Schema({
   name: {
     type: String,
     required: true,
     default: "",
   },
-
-  email: {
-    type: String,
-    required: true,
-    default: "",
-  },
+  gender: { type: String, required: true },
 
   phone: {
     type: String,
     required: true,
     default: "",
+    unique: true,
   },
 
-  fields: {
+  expertise: {
     type: [String],
   },
 
@@ -30,7 +26,7 @@ const astrologerSchema = Schema({
 
   experience: {
     type: Number,
-    default: 0
+    default: 0,
   },
 
   rate: {
@@ -40,11 +36,15 @@ const astrologerSchema = Schema({
   address: {
     type: String,
   },
-
+  pincode: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now(),
   },
+  image: { type: String },
 });
 
-module.exports = Astrologer = mongoose.model("Astrologer", astrologerSchema);
+module.exports = Doctor = mongoose.model("doctors", doctorSchema);
