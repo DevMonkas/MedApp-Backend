@@ -1,0 +1,25 @@
+{
+  "name": "medapp-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "firebase-admin": "^9.12.0",
+    "form-data": "^4.0.0",
+    "mongoose": "^6.0.10",
+    "razorpay": "^2.0.7",
+    "request": "^2.88.2",
+    "shortid": "^2.2.16",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6"
+  }
+}
