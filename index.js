@@ -2,7 +2,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const doctors = require("./routes/doctorRoute.js");
 const users = require("./routes/userRoute.js");
-const call = require("./routes/callRoute.js");
+const chat = require("./routes/chatRoute.js");
 const wallet = require("./routes/walletRoute");
 const express = require("express");
 const cors = require("cors");
@@ -11,12 +11,21 @@ const swaggerUi = require("swagger-ui-express");
 
 const app = express();
 const port = process.env.PORT || 8000;
+const ChatService = require("./services/chatService");
+const server = require("http").createServer(app);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+io.on("connection", (socket) => ChatService.handleSocket(socket));
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: "3.0.0",
     info: {
-      title: "Top Doctor API",
-      description: "Top Doctor Backend API DOC",
+      title: "QiviHealth API",
+      description: "QiviHealth Backend API DOC",
       servers: ["http://localhost:8000"],
     },
   },
@@ -40,11 +49,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/doctors", doctors);
 app.use("/users", users);
-app.use("/calling", call);
+app.use("/chat", chat);
 app.use("/wallet", wallet);
 
 const swaggerJSDoc = require("swagger-jsdoc"); //No use
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Application is listening at port ${port}`);
 });
