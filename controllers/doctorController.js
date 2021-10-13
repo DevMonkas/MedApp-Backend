@@ -25,6 +25,7 @@ module.exports = class Doctor {
 
   static async apiCreateDoctor(req, res, next) {
     try {
+      //console.log(req.body)
       const createdDoctor = await DoctorService.createDoctor(req.body);
       res.json(createdDoctor);
     } catch (error) {
@@ -34,13 +35,11 @@ module.exports = class Doctor {
 
   static async apiUpdateDoctor(req, res, next) {
     try {
-      const comment = {};
-      comment.title = req.body.title;
-      comment.body = req.body.body;
-      comment.articleImage = req.body.article_image;
+    //   for(var attributename in req.body){
+    //     console.log(attributename+": "+req.body[attributename]);
+    // }
 
-      const updatedDoctor = await DoctorService.updateDoctor(comment);
-
+      const updatedDoctor = await DoctorService.updateDoctor(req.body);
       if (updatedDoctor.modifiedCount === 0) {
         throw new Error("Unable to update article, error occord");
       }

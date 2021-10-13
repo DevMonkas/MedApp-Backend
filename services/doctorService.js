@@ -29,12 +29,16 @@ module.exports = class DoctorService {
   }
 
   static async createDoctor(data) {
-    const newDoctor = {
-      title: data.title,
-      body: data.body,
-      article_image: data.article_image,
-    };
-    const response = await new Doctor(newDoctor).save();
+    // const newDoctor = {
+    //   // title: data.title,
+    //   // body: data.body,
+    //   // article_image: data.article_image,
+    //   name: data.name,
+    //   gender: data.gender,
+    //   phone: data.phone,
+    //   pincode: data.pincode
+    // };
+    const response = await new Doctor(data).save();
     return response;
   }
 
@@ -45,12 +49,17 @@ module.exports = class DoctorService {
     return singleDoctorResponse;
   }
 
-  static async updateDoctor(title, body, articleImage) {
-    const updateResponse = await Doctor.updateOne(
-      { title, body, articleImage },
-      { $set: { date: new Date.now() } }
-    );
-    return updateResponse;
+  static async updateDoctor(body) {
+    // const updates = JSON.parse(body)
+    const updates={}
+    for(var attributename in body){
+      // console.log(attributename+": "+body[attributename]);
+      updates[attributename] = body[attributename]
+  }
+    const doctor = await Doctor.findOneAndUpdate({ _id: body._id },updates,{
+      new: true
+    });
+    return doctor;
   }
 
   static async deleteDoctor(articleId) {
