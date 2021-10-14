@@ -3,15 +3,7 @@ const user = require("../models/user.js");
 const wallet = require("../models/wallet");
 const { options } = require("../routes/userRoute.js");
 
-const PRIVATEKEY =
-  process.env.PRIVATEKEY1 +
-  process.env.PRIVATEKEY2 +
-  process.env.PRIVATEKEY3 +
-  process.env.PRIVATEKEY4 +
-  process.env.PRIVATEKEY5 +
-  process.env.PRIVATEKEY6 +
-  process.env.PRIVATEKEY7 +
-  process.env.PRIVATEKEY8;
+const PRIVATEKEY = process.env.PRIVATEKEY;
 const serviceAccount = {
   type: process.env.TYPE,
   project_id: process.env.PROJECTID,
