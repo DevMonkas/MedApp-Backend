@@ -1,6 +1,7 @@
 var FormData = require("form-data"); //not used
 var request = require("request");
 const conversation = require("../models/conversation");
+const doctor = require("../models/doctor");
 const onlineuser = require("../models/onlineuser");
 
 module.exports = class ChatService {
@@ -165,6 +166,17 @@ module.exports = class ChatService {
           userId: data.userId,
         },
         { messages: 0 }
+      );
+      res = await Promise.all(
+        res.map(async (ele, index) => {
+          let doc = await doctor.findOne(
+            { phone: ele.doctorId },
+            { name: 1, image: 1 }
+          );
+          ele = JSON.parse(JSON.stringify(ele));
+          Object.assign(ele, JSON.parse(JSON.stringify(doc)));
+          return ele;
+        })
       );
       return res;
     } catch (err) {
