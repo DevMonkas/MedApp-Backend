@@ -68,6 +68,7 @@ module.exports = class ChatService {
      *
      */
     socket.on("message", async (data) => {
+      console.log(data);
       const convExists = await conversation.exists({
         userId: data.payload.userId,
         doctorId: data.payload.doctorId,
@@ -114,6 +115,7 @@ module.exports = class ChatService {
         socket.to(data.payload.doctorId).emit("message", data.payload);
       } catch (err) {
         //handle error
+        console.log(err);
         socket.to(socket.id).emit("error occured", err);
       }
     });
@@ -163,7 +165,7 @@ module.exports = class ChatService {
     try {
       let res = await conversation.find(
         {
-          userId: data.userId,
+          userId: data.phoneNumber,
         },
         { messages: 0 }
       );

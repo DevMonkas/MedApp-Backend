@@ -28,7 +28,7 @@ module.exports = class Chat {
   }
   static async getAllConsultations(req, res, next) {
     try {
-      const consultations = await ChatService.getAllConsultations(req.body);
+      const consultations = await ChatService.getAllConsultations(req);
       res.json(consultations);
     } catch (error) {
       res.status(501).json({ error: error.message });

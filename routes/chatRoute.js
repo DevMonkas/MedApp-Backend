@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const ChatCtrl = require("../controllers/chatController");
+const tokenVerify = require("../middleware/tokenVerify.middleware");
 
 router.use("/chatDoctor", ChatCtrl.apiChatWithDoctor);
 
@@ -79,5 +80,5 @@ router.get("/getChatsWithDoctor", ChatCtrl.getChatWithDoctor);
  *
  *
  */
-router.get("/getAllConsultations", ChatCtrl.getAllConsultations);
+router.get("/getAllConsultations", tokenVerify, ChatCtrl.getAllConsultations);
 module.exports = router;

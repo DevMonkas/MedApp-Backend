@@ -5,7 +5,7 @@ module.exports = async (req, res, next) => {
     const token = req.headers.authorization;
     const decodedToken = await admin.auth().verifyIdToken(token);
     const phoneNumber = decodedToken.phone_number;
-    req.phoneNumber = phoneNumber;
+    req.phoneNumber = phoneNumber.replace("+91", "");
     if (!decodedToken) {
       throw "Invalid user ID";
     } else {
