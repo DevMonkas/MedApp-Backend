@@ -6,13 +6,11 @@ const conversationSchema = new Schema(
     userId: {
       type: String,
       required: true,
-      unique: true,
       default: "",
     },
     doctorId: {
       type: String,
       required: true,
-      unique: true,
       default: "",
     },
     status: {
