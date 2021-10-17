@@ -19,6 +19,17 @@ const io = require("socket.io")(server, {
     methods: ["GET", "POST"],
   },
 });
+const admin = require("firebase-admin");
+// io.use(async (socket, next) => {
+//   const token = socket.handshake.auth.token;
+//   console.log(token);
+//   try {
+//     const decodedToken = await admin.auth().verifyIdToken(token);
+//     if (decodedToken) {
+//       next();
+//     }
+//   } catch (err) {}
+// });
 io.on("connection", (socket) => ChatService.handleSocket(socket));
 const swaggerOptions = {
   swaggerDefinition: {

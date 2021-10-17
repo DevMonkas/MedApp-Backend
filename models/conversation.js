@@ -3,12 +3,12 @@ const Schema = mongoose.Schema;
 var message = require("./message");
 const conversationSchema = new Schema(
   {
-    userId: {
+    userPhone: {
       type: String,
       required: true,
       default: "",
     },
-    doctorId: {
+    doctorPhone: {
       type: String,
       required: true,
       default: "",

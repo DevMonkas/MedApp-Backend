@@ -36,16 +36,14 @@ module.exports = class ChatService {
     //   socket.join(data.roomId);
     socket.on("joinServer", (data) => {
       socket.join(data.roomId);
-      console.log(io.sockets.adapter.rooms.get(data.roomId));
       console.log("--->", data);
       console.log(`${socket.id} joined ${data.roomId}`);
-
       onlineuser
         .create({
           phone: data.phone,
         })
         .catch((err) => {
-          console.error(err);
+          console.log("Already Joined");
         });
     });
     socket.on("leaveServer", (data) => {
@@ -58,8 +56,8 @@ module.exports = class ChatService {
     });
     /**
      * payload:{
-     *   userId: string,
-     *   doctorId: string,
+     *   userPhone: string,
+     *   doctorPhone: string,
      *   to: string,
      *   from: string
      *   message: string,
@@ -70,16 +68,16 @@ module.exports = class ChatService {
     socket.on("message", async (data) => {
       console.log(data);
       const convExists = await conversation.exists({
-        userId: data.payload.userId,
-        doctorId: data.payload.doctorId,
+        userPhone: data.payload.userPhone,
+        doctorPhone: data.payload.doctorPhone,
       });
       console.log(convExists);
       try {
         if (convExists) {
           await conversation.findOneAndUpdate(
             {
-              userId: data.payload.userId,
-              doctorId: data.payload.doctorId,
+              userPhone: data.payload.userPhone,
+              doctorPhone: data.payload.doctorPhone,
             },
             {
               $push: {
@@ -97,8 +95,8 @@ module.exports = class ChatService {
         } else {
           await conversation
             .create({
-              userId: data.payload.userId,
-              doctorId: data.payload.doctorId,
+              userPhone: data.payload.userPhone,
+              doctorPhone: data.payload.doctorPhone,
               status: true,
               messages: [
                 {
@@ -112,16 +110,19 @@ module.exports = class ChatService {
               console.log(data);
             });
         }
-        socket.to(data.payload.doctorId).emit("message", data.payload);
+        socket
+          .to(data.roomId)
+          .emit("message", {
+            ...data.payload,
+            created_at: new Date().toUTCString(),
+          });
       } catch (err) {
         //handle error
         console.log(err);
         socket.to(socket.id).emit("error occured", err);
       }
     });
-    socket.on("disconnect", () => {
-      console.log("disconnected");
-    });
+
     socket.on("offerOrAnswer", (data) => {
       // for (const [socketID, socket] of connectedPeers.entries()) {
       //   //don't send to self
@@ -145,13 +146,16 @@ module.exports = class ChatService {
       console.log("candidate-->", data.roomId);
       socket.to(data.payload.roomId).emit("candidate", data.payload);
     });
+    socket.on("disconnect", () => {
+      console.log("disconnected");
+    });
   }
   static async getChatWithDoctor(data) {
     try {
       let res = await conversation.findOne(
         {
-          userId: data.userId,
-          doctorId: data.doctorId,
+          userPhone: data.userPhone,
+          doctorPhone: data.doctorPhone,
         },
         { messages: 1, _id: 0 }
       );
@@ -165,14 +169,14 @@ module.exports = class ChatService {
     try {
       let res = await conversation.find(
         {
-          userId: data.phoneNumber,
+          userPhone: data.phoneNumber,
         },
         { messages: 0 }
       );
       res = await Promise.all(
         res.map(async (ele, index) => {
           let doc = await doctor.findOne(
-            { phone: ele.doctorId },
+            { phone: ele.doctorPhone },
             { name: 1, image: 1 }
           );
           ele = JSON.parse(JSON.stringify(ele));
