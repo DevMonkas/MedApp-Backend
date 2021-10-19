@@ -31,7 +31,7 @@ module.exports = class ChatService {
     );
   }
   static handleSocket(socket) {
-    console.log(socket.id);
+    console.log("new=>", socket.id);
     socket.emit("connection-success", { success: socket.id });
     //   socket.join(data.roomId);
     socket.on("joinServer", (data) => {
@@ -71,7 +71,6 @@ module.exports = class ChatService {
         userPhone: data.payload.userPhone,
         doctorPhone: data.payload.doctorPhone,
       });
-      console.log(convExists);
       try {
         if (convExists) {
           await conversation.findOneAndUpdate(
@@ -85,6 +84,7 @@ module.exports = class ChatService {
                   to: data.payload.to,
                   from: data.payload.from,
                   message: data.payload.message,
+                  system: data.payload.system,
                 },
               },
             },
@@ -103,6 +103,7 @@ module.exports = class ChatService {
                   to: data.payload.to,
                   from: data.payload.from,
                   message: data.payload.message,
+                  system: data.payload.system,
                 },
               ],
             })
@@ -110,12 +111,10 @@ module.exports = class ChatService {
               console.log(data);
             });
         }
-        socket
-          .to(data.roomId)
-          .emit("message", {
-            ...data.payload,
-            created_at: new Date().toUTCString(),
-          });
+        socket.to(data.roomId).emit("message", {
+          ...data.payload,
+          created_at: new Date().toUTCString(),
+        });
       } catch (err) {
         //handle error
         console.log(err);
