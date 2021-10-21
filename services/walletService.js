@@ -45,7 +45,7 @@ module.exports = class WalletService {
       });
       if (User) {
         console.log("UserID - ", User.id);
-        const updation = await wallet.updateOne(
+        const updation = await User.updateOne(
           { user_id: User.id },
           { $inc: { money: data.payload.payment.entity.amount / 100 } }
         );
@@ -62,21 +62,16 @@ module.exports = class WalletService {
     return { status: "ok" };
   }
   static async getWalletMoney(req) {
-    const User = await user.findOne({
-      phone: req.phoneNumber.replace("+91", ""),
-    });
-    if (User) {
-      const response = await wallet.findOne({ user_id: User.id });
-      console.log(response);
-      if (response) {
-        return {
-          money: response.money,
-        };
-      } else {
-        return {
-          money: "0",
-        };
+    const response = await user.findOne(
+      {
+        phone: req.phoneNumber.replace("+91", ""),
+      },
+      {
+        money: 1,
       }
-    }
+    );
+    return {
+      money: response.money ? response.money : 0,
+    };
   }
 };
