@@ -40,17 +40,11 @@ module.exports = class WalletService {
     console.log(digest, headerData["x-razorpay-signature"]);
     if (digest === headerData["x-razorpay-signature"]) {
       console.log("Payment is legit.");
-      const User = await user.findOne({
-        phone: data.payload.payment.entity.notes.phoneNumber,
-      });
-      if (User) {
-        console.log("UserID - ", User.id);
-        const updation = await User.updateOne(
-          { user_id: User.id },
-          { $inc: { money: data.payload.payment.entity.amount / 100 } }
-        );
-        console.log(updation);
-      }
+      const updation = await user.updateOne(
+        { phone: data.payload.payment.entity.notes.phoneNumber },
+        { $inc: { money: data.payload.payment.entity.amount / 100 } }
+      );
+      console.log(updation);
     }
     const dataJSON = {
       phoneNumber: data.payload.payment.entity.notes.phoneNumber,
