@@ -14,7 +14,10 @@ const userSchema = new Schema(
       required: false,
       default: "",
     },
-
+    money: {
+      type: Number,
+      default: 0,
+    },
     phone: {
       type: String,
       required: true,
