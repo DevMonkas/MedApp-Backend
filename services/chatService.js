@@ -117,6 +117,12 @@ module.exports = class ChatService {
           ...data.payload,
           created_at: new Date().toUTCString(),
         });
+        //To delete
+        let numbers = data.roomId.split("_");
+        socket.to(numbers[1] + "_" + numbers[0]).emit("message", {
+          ...data.payload,
+          created_at: new Date().toUTCString(),
+        });
       } catch (err) {
         //handle error
         console.log(err);
