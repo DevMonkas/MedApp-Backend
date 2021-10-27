@@ -13,10 +13,10 @@ module.exports = class Doctor {
     }
   }
 
-  static async apiGetDoctorById(req, res, next) {
+  static async apiGetDoctorByPhone(req, res, next) {
     try {
-      let id = req.params.id || {};
-      const article = await DoctorService.getDoctorbyId(id);
+      let phone = req.query.phone || {};
+      const article = await DoctorService.getDoctorbyPhone(phone);
       res.json(article);
     } catch (error) {
       res.status(500).json({ error: error });
@@ -35,9 +35,9 @@ module.exports = class Doctor {
 
   static async apiUpdateDoctor(req, res, next) {
     try {
-    //   for(var attributename in req.body){
-    //     console.log(attributename+": "+req.body[attributename]);
-    // }
+      //   for(var attributename in req.body){
+      //     console.log(attributename+": "+req.body[attributename]);
+      // }
 
       const updatedDoctor = await DoctorService.updateDoctor(req.body);
       if (updatedDoctor.modifiedCount === 0) {

@@ -36,6 +36,8 @@ module.exports = class ChatService {
     //   socket.join(data.roomId);
     socket.on("joinServer", (data) => {
       socket.join(data.roomId);
+      let numbers = data.roomId.split("_");
+      socket.join(numbers[1] + "_" + numbers[0]);
       console.log("--->", data);
       console.log(`${socket.id} joined ${data.roomId}`);
       onlineuser
