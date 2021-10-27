@@ -34,9 +34,9 @@ module.exports = class DoctorService {
     return response;
   }
 
-  static async getDoctorbyId(articleId) {
-    const singleDoctorResponse = await Doctor.findById({
-      _id: articleId,
+  static async getDoctorbyPhone(phoneNumber) {
+    const singleDoctorResponse = await Doctor.findOne({
+      phone: phoneNumber,
     });
     return singleDoctorResponse;
   }
