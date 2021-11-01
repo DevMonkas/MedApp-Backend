@@ -15,7 +15,10 @@ const doctorSchema = Schema({
     default: "",
     unique: true,
   },
-
+  money: {
+    type: Number,
+    default: 0,
+  },
   expertise: {
     type: [String],
   },

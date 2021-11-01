@@ -59,4 +59,16 @@ module.exports = class Doctor {
       res.status(500).json({ error: error });
     }
   }
+  static async apiCheckDoctorAuth(req, res, next) {
+    try {
+      const doctor = await DoctorService.getDoctorbyPhone(req.body.phoneNumber);
+      if (!doctor) {
+        res.json({ userExists: false });
+      } else {
+        res.json({ userExists: true });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.toString() });
+    }
+  }
 };
