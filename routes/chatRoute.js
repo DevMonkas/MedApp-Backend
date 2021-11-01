@@ -81,4 +81,11 @@ router.get("/getChatsWithDoctor", ChatCtrl.getChatWithDoctor);
  *
  */
 router.get("/getAllConsultations", tokenVerify, ChatCtrl.getAllConsultations);
+
+router.get(
+  "/getAllConsultationsForDoctor",
+  tokenVerify,
+  ChatCtrl.getAllConsultationsForDoctor
+);
+
 module.exports = router;

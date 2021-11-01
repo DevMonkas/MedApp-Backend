@@ -34,4 +34,12 @@ module.exports = class Chat {
       res.status(501).json({ error: error.message });
     }
   }
+  static async getAllConsultationsForDoctor(req, res, next) {
+    try {
+      const consultations = await ChatService.getAllConsultationsForDoctor(req);
+      res.json(consultations);
+    } catch (error) {
+      res.status(501).json({ error: error.message });
+    }
+  }
 };

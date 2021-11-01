@@ -3,7 +3,7 @@ var request = require("request");
 const conversation = require("../models/conversation");
 const doctor = require("../models/doctor");
 const onlineuser = require("../models/onlineuser");
-
+const user = require("../models/user");
 module.exports = class ChatService {
   static async callDoctor(data) {
     const body = {
@@ -130,7 +130,7 @@ module.exports = class ChatService {
       //     socket.emit("offerOrAnswer", data.payload);
       //   }
       // }
-      socket.to(data.payload.roomId).emit("offerOrAnswer", data.payload);
+      socket.to(data.roomId).emit("offerOrAnswer", data.payload);
       // console.log('xoxox',data);
       console.log(`offer sent to roomId ${data.payload.roomId}`);
     });
@@ -143,7 +143,7 @@ module.exports = class ChatService {
       //   }
       // }
       console.log("candidate-->", data.roomId);
-      socket.to(data.payload.roomId).emit("candidate", data.payload);
+      socket.to(data.roomId).emit("candidate", data.payload);
     });
     socket.on("disconnect", () => {
       console.log("disconnected");
@@ -178,6 +178,28 @@ module.exports = class ChatService {
             { phone: ele.doctorPhone },
             { name: 1, image: 1 }
           );
+          ele = JSON.parse(JSON.stringify(ele));
+          Object.assign(ele, JSON.parse(JSON.stringify(doc)));
+          return ele;
+        })
+      );
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+  static async getAllConsultationsForDoctor(data) {
+    try {
+      let res = await conversation.find(
+        {
+          doctorPhone: data.phoneNumber,
+        },
+        { messages: 0 }
+      );
+      console.log(res);
+      res = await Promise.all(
+        res.map(async (ele, index) => {
+          let doc = await user.findOne({ phone: ele.userPhone }, { name: 1 });
           ele = JSON.parse(JSON.stringify(ele));
           Object.assign(ele, JSON.parse(JSON.stringify(doc)));
           return ele;
