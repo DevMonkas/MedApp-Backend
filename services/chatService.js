@@ -123,26 +123,11 @@ module.exports = class ChatService {
     });
 
     socket.on("offerOrAnswer", (data) => {
-      // for (const [socketID, socket] of connectedPeers.entries()) {
-      //   //don't send to self
-      //   if (socketID !== data.socketID) {
-      //     console.log(socketID, data.payload.type);
-      //     socket.emit("offerOrAnswer", data.payload);
-      //   }
-      // }
       socket.to(data.roomId).emit("offerOrAnswer", data.payload);
-      // console.log('xoxox',data);
-      console.log(`offer sent to roomId ${data.payload.roomId}`);
+      console.log("xoxox", data);
+      console.log(`offer sent to roomId ${data.roomId}`);
     });
     socket.on("candidate", (data) => {
-      // for (const [socketID, socket] of connectedPeers.entries()) {
-      //   //don't send to self
-      //   if (socketID !== data.socketID) {
-      //     console.log(socketID, data.payload.type);
-      //     socket.to('qwerty').emit("candidate", data.payload);
-      //   }
-      // }
-      console.log("candidate-->", data.roomId);
       socket.to(data.roomId).emit("candidate", data.payload);
     });
     socket.on("disconnect", () => {
