@@ -127,6 +127,18 @@ module.exports = class ChatService {
       console.log("xoxox", data);
       console.log(`offer sent to roomId ${data.roomId}`);
     });
+    socket.on("answered", (data) => {
+      socket.to(data.roomId).emit("answered", data.payload);
+    });
+    socket.on("videoToggle", (data) => {
+      socket.to(data.roomId).emit("videoToggle", data.payload);
+    });
+    socket.on("audioToggle", (data) => {
+      socket.to(data.roomId).emit("audioToggle", data.payload);
+    });
+    socket.on("callEnded", (data) => {
+      socket.to(data.roomId).emit("callEnded", data.payload);
+    });
     socket.on("candidate", (data) => {
       socket.to(data.roomId).emit("candidate", data.payload);
     });
