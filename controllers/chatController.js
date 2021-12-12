@@ -20,7 +20,7 @@ module.exports = class Chat {
 
   static async getChatWithDoctor(req, res, next) {
     try {
-      const chats = await ChatService.getChatWithDoctor(req.body);
+      const chats = await ChatService.getChatWithDoctor(req.query);
       res.json(chats);
     } catch (error) {
       res.status(501).json({ error: error.message });
