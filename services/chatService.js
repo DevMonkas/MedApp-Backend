@@ -123,7 +123,7 @@ module.exports = class ChatService {
     });
 
     socket.on("offerOrAnswer", (data) => {
-      socket.to(data.roomId).emit("offerOrAnswer", data.payload);
+      socket.to(data.roomId).emit("offerOrAnswer", data);
       console.log("xoxox", data);
       console.log(`offer sent to roomId ${data.roomId}`);
     });
